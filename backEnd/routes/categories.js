@@ -9,9 +9,18 @@ router.get(`/`, async (req, res) => {
     if (!categoryList) {
         res.status(500).json({success: false})
     }
-    res.send(categoryList);
+    res.status(200).send(categoryList);
 })
 
+//get categories by id
+router.get(`/:id`, async (req, res) => {
+    const category = await Category.findById(req.params.id);
+
+    if (!category) {
+        res.status(500).json({success: false})
+    }
+    res.status(200).send(category);
+})
 
 // Create a category
 router.post('/', async (req, res) => {
