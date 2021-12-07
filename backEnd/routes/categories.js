@@ -9,9 +9,18 @@ router.get(`/`, async (req, res) => {
     if (!categoryList) {
         res.status(500).json({success: false})
     }
-    res.send(categoryList);
+    res.status(200).send(categoryList);
 })
 
+//get categories by id
+router.get(`/:id`, async (req, res) => {
+    const category = await Category.findById(req.params.id);
+
+    if (!category) {
+        res.status(500).json({success: false})
+    }
+    res.status(200).send(category);
+})
 
 // Create a category
 router.post('/', async (req, res) => {
@@ -48,6 +57,24 @@ router.delete('/:id', (req, res) => {
             error: err
         })
     })
+})
+
+//Updateing the category
+router.put('/:id', async (req, res)=>{
+    const category = await Category.findByIdAndUpdate(
+        req.params.id,
+        {
+            name: req.body.name,
+            icon: req.body.icon,
+            color: req.body.color
+        },
+        {new: true}
+    );
+
+    if (!category){
+        return res.status(400).send('the category cannot be updated')
+    }
+    res.send(category)
 })
 
 module.exports = router;
