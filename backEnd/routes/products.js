@@ -3,8 +3,10 @@ const express = require('express');
 const {Category} = require("../models/category");
 const router = express.Router();
 
+
+//get product list
 router.get(`/`, async (req, res) =>{
-    const productList = await Product.find();
+    const productList = await Product.find().select('name image -_id');
 
     if(!productList) {
         res.status(500).json({success: false})
@@ -12,6 +14,17 @@ router.get(`/`, async (req, res) =>{
     res.send(productList);
 })
 
+//get product list by id
+router.get(`/:id`, async (req, res) =>{
+    const product = await Product.findById(req.params.id);
+
+    if(!product) {
+        res.status(500).json({success: false})
+    }
+    res.send(product);
+})
+
+//post a new product list by category
 router.post(`/`, async (req, res) =>{
 
     const category = await Category.findById(req.body.category);
