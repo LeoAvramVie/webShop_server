@@ -1,6 +1,0 @@
-# Project exclude paths
-/backEnd/node_modules/
-
-/.idea/
-/.env/
-/backEnd/.env
