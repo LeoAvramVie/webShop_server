@@ -1,18 +1,35 @@
 const {Order} = require('../models/order');
 const express = require('express');
-const {Category} = require("../models/category");
 const {OrderItem} = require("../models/oderItem");
-const {raw} = require("express");
 const router = express.Router();
 
 //get all orders / orderList
 router.get(`/`, async (req, res) => {
-    const orderList = await Order.find();
+
+    const orderList = await Order.find().populate('user', 'name').sort({'dateOrdered': -1});
+
 
     if (!orderList) {
         res.status(500).json({success: false})
     }
     res.send(orderList);
+})
+
+//get order by ID
+router.get(`/:id`, async (req, res) => {
+
+    const order = await Order.findById(req.params.id)
+        .populate('user', 'name')
+        .populate({
+            path:'orderItems', populate: {
+                path: 'product', populate: 'category'}
+        } );
+
+
+    if (!order) {
+        res.status(500).json({success: false})
+    }
+    res.send(order);
 })
 
 //create order
@@ -48,5 +65,7 @@ router.post('/', async (req, res) => {
     }
     res.send(order);
 })
+
+
 
 module.exports = router;

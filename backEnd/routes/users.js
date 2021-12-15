@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
-const {Product} = require("../models/product");
-const {Category} = require("../models/category");
+
 
 //get all users
 router.get('/', async (req, res) => {

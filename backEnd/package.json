@@ -17,6 +17,7 @@
     "express-jwt": "^6.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.15",
+    "mongoose-autopopulate": "^0.16.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
   }
