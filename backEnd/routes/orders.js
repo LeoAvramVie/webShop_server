@@ -1,12 +1,17 @@
 const {Order} = require('../models/order');
 const express = require('express');
 const {OrderItem} = require("../models/oderItem");
+const mongoose = require("mongoose");
+const {Category} = require("../models/category");
+const {Product} = require("../models/product");
 const router = express.Router();
 
 //get all orders / orderList
 router.get(`/`, async (req, res) => {
 
-    const orderList = await Order.find().populate('user', 'name').sort({'dateOrdered': -1});
+    const orderList = await Order.find()
+        .populate('user', 'name')
+        .sort({'dateOrdered': -1});
 
 
     if (!orderList) {
@@ -75,20 +80,20 @@ router.post('/', async (req, res) => {
 })
 
 //update status of an order
-router.put('/:id', async (req, res)=>{
-    const order = await Order.findByIdAndUpdate(
+router.put(`/:id`, async (req, res) => {
+    const updatedOrder = await Order.findByIdAndUpdate(
         req.params.id,
         {
-            status: req.body.status
+            status: req.body.status,
         },
-        {new: true}
+        { new: true }
     );
 
-    if (!order){
-        return res.status(400).send('the order cannot be updated')
-    }
-    res.send(order)
-})
+    if (!updatedOrder) return res.status(400).send("the order cannot be update!");
+
+    res.send(updatedOrder);
+
+});
 
 //delete order
 router.delete('/:id', (req, res) => {
